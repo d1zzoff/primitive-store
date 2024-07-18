@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    width: 100vw;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(0 0% 50%);
+  }
+
+  body {
+    @apply bg-black h-screen;
+  }
+
+  h2 {
+    @apply text-xl font-semibold text-light;
+  }
+
+  h6 {
+    @apply text-xs font-normal text-light_grey;
+  }
+
+  h5 {
+    @apply text-sm font-medium text-light;
+  }
+
+  h4 {
+    @apply text-base font-medium text-light;
+  }
+
+  p {
+    @apply text-sm font-normal text-light;
+  }
+
+  button {
+    @apply text-sm font-medium;
+  }
+
+  input {
+    @apply text-light focus:outline-none text-sm;
+  }
+}
