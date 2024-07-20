@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .base-button svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .upload-image {
+    position: relative;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .upload-image::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 50%;
+    z-index: 9;
+  }
+
+  .upload-image:hover::before {
+    opacity: 1;
+  }
+}
+
+@layer base {
+  html {
+    width: 100vw;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(0 0% 50%);
+  }
+
+  body {
+    @apply bg-black h-screen;
+  }
+
+  h2 {
+    @apply text-xl font-semibold text-light;
+  }
+
+  h6 {
+    @apply text-xs font-normal text-light-grey;
+  }
+
+  h5 {
+    @apply text-sm font-medium text-light;
+  }
+
+  h4 {
+    @apply text-base font-medium text-light;
+  }
+
+  p {
+    @apply text-sm font-normal text-light;
+  }
+
+  button {
+    @apply text-sm font-medium;
+  }
+
+  input {
+    @apply text-light focus:outline-none text-sm;
+  }
+}
