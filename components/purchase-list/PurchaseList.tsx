@@ -19,6 +19,7 @@ const PurchaseList = () => {
     queryFn: () => getUserOrders({ page, limit: 10 }),
     staleTime: 60 * 1000 * 5,
   });
+
   return (
     <>
       <div className="flex flex-col gap-5 items-start w-full">

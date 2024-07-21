@@ -10,7 +10,8 @@ interface editProductModalState {
 const useEditProductModal = create<editProductModalState>((set) => ({
   isOpen: false,
   productId: null,
-  openEditProductModal: (productId) => set({ isOpen: true, productId }),
+  func: () => {},
+  openEditProductModal: (productId: number) => set({ isOpen: true, productId }),
   closeEditProductModal: () => set({ isOpen: false, productId: null }),
 }));
 

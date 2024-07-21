@@ -64,6 +64,12 @@ const PurchaseModal = () => {
 
   const count = watch("count");
 
+  useEffect(() => {
+    if (isError) {
+      closePurchaseModal();
+    }
+  }, [isError]);
+
   return (
     <ModalLayout
       isOpen={isOpen}
@@ -72,6 +78,7 @@ const PurchaseModal = () => {
         { text: "Закрыть", click: closePurchaseModal },
         { text: "Подтвердить", click: handleSubmit(onSubmit) },
       ]}
+      error={error}
     >
       <div className="flex flex-col gap-[10px] items-start w-full">
         {isLoading ? (

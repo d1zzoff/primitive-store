@@ -73,18 +73,21 @@ const RegisterModal = () => {
       </div>
       <form className="flex flex-col items-start gap-5 w-full">
         <Input
-          label="Имя пользователя"
-          error={errors.username?.message}
-          {...register("username", {
-            required: "Имя пользователя обязательно",
+          label="Ваш E-mail"
+          error={errors.email?.message}
+          {...register("email", {
+            required: "E-mail обязательный",
             minLength: {
               value: 4,
               message: "Мин. длинна имени - 4 символа",
             },
+            maxLength: {
+              value: 20,
+              message: "Макс. длинна имени - 20 символа",
+            },
             pattern: {
-              value: /^[a-zA-Z0-9_]+$/,
-              message:
-                "Имя пользователя может содержать только латинские буквы, цифры и (_)",
+              value: /^[a-zA-Z0-9_@.]+$/,
+              message: "Введите корректный e-mail",
             },
           })}
         />

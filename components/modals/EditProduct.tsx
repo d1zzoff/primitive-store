@@ -13,7 +13,6 @@ import {
   getEditProductInfo,
   IEditProduct,
 } from "@/lib/actions/goods";
-import { uploadImage } from "@/lib/actions/upload";
 
 const EditProduct = () => {
   const { isOpen, closeEditProductModal, productId } = useEditProductModal();
@@ -25,7 +24,6 @@ const EditProduct = () => {
   } = useForm<IEditProduct>();
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState<OptionType | null>(null);
-  const queryClient = useQueryClient();
   const [error, setError] = useState("");
 
   const { data: categories } = useQuery({
@@ -45,7 +43,6 @@ const EditProduct = () => {
     mutationFn: editProduct,
     onSuccess: () => {
       closeEditProductModal();
-      queryClient.invalidateQueries({ queryKey: ["products"] });
     },
     onError: (err: Error) => {
       setError(err.message);
@@ -55,10 +52,18 @@ const EditProduct = () => {
   const onSubmit = async (data: IEditProduct) => {
     if (!productId) return;
 
-    try {
-      let imageUrl;
+    if (!description || description.length < 10) {
+      setError("Описание должно состоять минимум из 10 символов.");
+      return;
+    }
 
-      if (uploadImageInput.current?.files) {
+    try {
+      let imageUrl = null;
+
+      if (
+        uploadImageInput.current?.files &&
+        uploadImageInput.current?.files[0]
+      ) {
         const formData = new FormData();
         formData.append("image", uploadImageInput.current?.files?.[0]);
 
@@ -76,13 +81,11 @@ const EditProduct = () => {
         description: description || product?.data.description,
         category: category?.value || product?.data.category,
         price: Number(data.price) || product?.data.price,
-        image: imageUrl || product?.data.image,
+        image: imageUrl,
       };
 
       mutate(reqData);
     } catch (error) {
-      console.error(error);
-
       setError("Не удалось загрузить изображение.");
     }
   };
@@ -113,6 +116,7 @@ const EditProduct = () => {
     if (!isOpen) {
       reset();
 
+      setError("");
       setImagePreview(null);
       setDescription("");
       setCategory(null);
@@ -200,7 +204,17 @@ const EditProduct = () => {
         </div>
         <Input
           label="Название товара"
-          {...register("name")}
+          {...register("name", {
+            required: "Имя товара обязательно.",
+            minLength: {
+              value: 4,
+              message: "Мин. длинна имени - 4 символа",
+            },
+            maxLength: {
+              value: 20,
+              message: "Макс. длинна имени - 20 символа",
+            },
+          })}
           error={errors.name?.message}
         />
         <label className="flex flex-col items-start gap-[10px] w-full">
@@ -223,7 +237,13 @@ const EditProduct = () => {
         <Input
           label="Цена товара, ₴"
           error={errors.price?.message}
-          {...register("price")}
+          {...register("price", {
+            required: "Цена товара обязательна.",
+            min: {
+              value: 1,
+              message: "Цена должна быть выше нуля.",
+            },
+          })}
         />
       </form>
     </ModalLayout>

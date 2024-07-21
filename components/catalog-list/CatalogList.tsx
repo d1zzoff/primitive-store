@@ -2,14 +2,12 @@
 
 import ProductItem from "./ProductItem";
 import { getProducts, IGetProductsFilters } from "@/lib/actions/goods";
-import ProductSkeleton from "./ProducSkeleton";
-import { Suspense } from "react";
 
-const CatalogList = async ({
+async function CatalogList({
   searchParams,
 }: {
   searchParams: IGetProductsFilters;
-}) => {
+}) {
   const data = await getProducts(searchParams);
 
   return (
@@ -19,18 +17,12 @@ const CatalogList = async ({
         {(data?.ok && data.data && data?.data.length) || 0}
       </h2>
       <div className="flex gap-5 flex-wrap w-full">
-        <Suspense
-          fallback={[...Array(10)].map((_, i) => (
-            <ProductSkeleton key={i} />
-          ))}
-        >
-          {data?.ok &&
-            data.data &&
-            data.data.map((el, i) => <ProductItem key={i} product={el} />)}
-        </Suspense>
+        {data?.ok &&
+          data.data &&
+          data.data.map((el, i) => <ProductItem key={i} product={el} />)}
       </div>
     </section>
   );
-};
+}
 
 export default CatalogList;

@@ -2,7 +2,9 @@
 
 import CatalogFilters from "@/components/CatalogFilters";
 import CatalogList from "@/components/catalog-list/CatalogList";
+import ProductSkeleton from "@/components/catalog-list/ProducSkeleton";
 import { IGetProductsFilters } from "@/lib/actions/goods";
+import { Suspense } from "react";
 
 const Page = async ({
   searchParams,
@@ -12,7 +14,9 @@ const Page = async ({
   return (
     <article className="flex gap-[35px] w-full flex-col items-start md:flex-row">
       <CatalogFilters />
-      <CatalogList searchParams={searchParams} />
+      <Suspense fallback={<ProductSkeleton />}>
+        <CatalogList searchParams={searchParams} />
+      </Suspense>
     </article>
   );
 };

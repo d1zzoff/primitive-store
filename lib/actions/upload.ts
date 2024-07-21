@@ -11,7 +11,7 @@ export async function uploadImage(
   const formData = new FormData();
   formData.append("image", imageFile);
 
-  const response = await fetch("http://localhost:8080/upload", {
+  const response = await fetch(`${process.env.API_URL}/upload`, {
     method: "POST",
     body: formData,
   }).then((res) => res.json());

@@ -5,27 +5,28 @@ import { cookies } from "next/headers";
 export interface IGetUser {
   ok: boolean;
   data: {
-    username: string;
+    email: string;
     user_id: number;
     role: string;
   };
 }
 
 export interface IRegisterUser {
-  username: string;
+  email: string;
   password: string;
   repeatedPassword: string;
 }
 
 export interface ILoginUser {
-  username: string;
+  email: string;
   password: string;
+  remember_me: boolean;
 }
 
 export async function getUserInfo(): Promise<IGetUser> {
   const token = cookies().get("_token")?.value;
 
-  const response = await fetch("http://localhost:8080/user/info", {
+  const response = await fetch(`${process.env.API_URL}/user/info`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -42,7 +43,14 @@ export async function registerUser(data: IRegisterUser) {
   });
 
   if (!response.ok) {
-    throw new Error("Ошибка");
+    switch (response.status) {
+      case 409:
+        throw new Error("Это имя пользователя уже занято.");
+      default:
+        throw new Error(
+          "Не удалось создать аккаунт. Пожалуйста, попробуйте позже."
+        );
+    }
   }
 
   const resData = await response.json();
@@ -67,19 +75,26 @@ export async function loginUser(data: ILoginUser) {
   });
 
   if (!response.ok) {
-    throw new Error("Ошибка");
+    throw new Error("Неверный логин или пароль.");
   }
 
   const resData = await response.json();
 
   if (resData.ok && resData.jwt) {
-    const time = 3 * 24 * 60 * 60 * 1000;
+    if (data.remember_me) {
+      const time = 3 * 24 * 60 * 60 * 1000;
 
-    cookies().set("_token", resData.jwt, {
-      httpOnly: true,
-      secure: true,
-      expires: new Date(Date.now() + time),
-    });
+      cookies().set("_token", resData.jwt, {
+        httpOnly: true,
+        secure: true,
+        expires: new Date(Date.now() + time),
+      });
+    } else {
+      cookies().set("_token", resData.jwt, {
+        httpOnly: true,
+        secure: true,
+      });
+    }
   }
 
   return resData;
@@ -88,7 +103,7 @@ export async function loginUser(data: ILoginUser) {
 export async function checkAdminAccess() {
   const token = cookies().get("_token")?.value;
 
-  const response = await fetch("http://localhost:8080/user/access", {
+  const response = await fetch(`${process.env.API_URL}/user/access`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,

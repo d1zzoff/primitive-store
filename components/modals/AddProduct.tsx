@@ -4,7 +4,7 @@ import useAddProduct from "@/lib/hooks/useAddProduct";
 import ModalLayout from "./ModalLayout";
 import Input from "@/components/ui/Input";
 import { useForm } from "react-hook-form";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Dropdown, { OptionType } from "@/components/ui/Dropdown";
 import { addProduct, getCategories, IAddProduct } from "@/lib/actions/goods";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -55,6 +55,11 @@ const AddProduct = () => {
   };
 
   const onSubmit = async (data: IAddProduct) => {
+    if (!description || description.length < 10) {
+      setError("Описание должно состоять минимум из 10 символов.");
+      return;
+    }
+
     if (!uploadImageInput.current?.files?.[0]) {
       setError("Пожалуйста, загрузите изображение.");
       return;
@@ -81,11 +86,14 @@ const AddProduct = () => {
 
       mutate(reqData);
     } catch (error) {
-      console.error(error);
-
       setError("Не удалось загрузить изображение.");
     }
   };
+
+  useEffect(() => {
+    reset();
+    setError("");
+  }, [isOpen]);
 
   return (
     <ModalLayout
@@ -154,7 +162,17 @@ const AddProduct = () => {
         </div>
         <Input
           label="Название товара"
-          {...register("name")}
+          {...register("name", {
+            required: "Имя товара обязательно.",
+            minLength: {
+              value: 4,
+              message: "Мин. длинна имени - 4 символа",
+            },
+            maxLength: {
+              value: 20,
+              message: "Макс. длинна имени - 20 символа",
+            },
+          })}
           error={errors.name?.message}
         />
         <label className="flex flex-col items-start gap-[10px] w-full">
@@ -177,7 +195,13 @@ const AddProduct = () => {
         <Input
           label="Цена товара, ₴"
           error={errors.price?.message}
-          {...register("price")}
+          {...register("price", {
+            required: "Цена товара обязательна.",
+            min: {
+              value: 1,
+              message: "Цена должна быть выше нуля.",
+            },
+          })}
         />
       </form>
     </ModalLayout>

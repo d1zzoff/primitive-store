@@ -2,20 +2,20 @@ import { create } from "zustand";
 
 interface WarningModalState {
   isOpen: boolean;
-  actionId: string | null;
   content: string | null;
-  openWarningModal: (actionId: string, content: string) => void;
+  func: (v?: any) => void;
+  openWarningModal: (content: string, func: (v?: any) => void) => void;
   closeWarningModal: () => void;
 }
 
 const useWarningModal = create<WarningModalState>((set) => ({
   isOpen: false,
-  actionId: null,
   content: null,
-  openWarningModal: (actionId: string, content: string) =>
-    set({ isOpen: true, actionId, content }),
+  func: () => {},
+  openWarningModal: (content: string, func: (v?: any) => void) =>
+    set({ isOpen: true, content, func }),
   closeWarningModal: () =>
-    set({ isOpen: false, actionId: null, content: null }),
+    set({ isOpen: false, content: null, func: () => {} }),
 }));
 
 export default useWarningModal;

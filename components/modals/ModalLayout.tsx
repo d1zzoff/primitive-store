@@ -48,7 +48,7 @@ const ModalLayout: FC<ModalLayoutProps> = ({
           />
           <div
             className={clsx(
-              "relative bg-grey rounded-2xl p-20 z-[90] p-[30px] flex flex-col gap-[30px] items-start w-[calc(100%-40px)] max-w-[500px] max-h-[450px] overflow-auto sm:max-h-none",
+              "relative bg-grey rounded-2xl z-[90] p-[30px] flex flex-col gap-[30px] items-start w-[calc(100%-40px)] max-w-[500px] max-h-[450px] overflow-auto sm:max-h-none",
               {
                 "animate-modal": !closing,
                 "animate-modalClose": closing,
@@ -57,7 +57,6 @@ const ModalLayout: FC<ModalLayoutProps> = ({
           >
             {children}
             <div className="flex flex-col gap-[15px] w-full">
-              {error && <p className="text-red">{error}</p>}
               <div className="flex gap-[10px] items-center w-full">
                 {buttons && (
                   <Button
@@ -74,6 +73,7 @@ const ModalLayout: FC<ModalLayoutProps> = ({
                   </Button>
                 )}
               </div>
+              {error && <p className="text-red">{error}</p>}
             </div>
           </div>
         </div>

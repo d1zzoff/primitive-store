@@ -26,9 +26,10 @@ const ProfileInfo = () => {
   });
 
   const handleQuitAccount = () => {
-    const actionId = "quit-account";
-    registerActionHandler(actionId, quitAccountAction);
-    openWarningModal(actionId || "", "Вы уверены что хотите выйти с аккаунта?");
+    openWarningModal(
+      "Вы уверены что хотите выйти с аккаунта?",
+      quitAccountAction
+    );
   };
 
   const quitAccountAction = async () => {
@@ -63,12 +64,12 @@ const ProfileInfo = () => {
       <div className="absolute w-full rounded-2xl bg-grey px-5 flex flex-col gap-[30px] justify-end top-[60px] pb-5 pt-[80px]">
         <div className="flex gap-[30px]">
           <div className="flex flex-col items-start gap-[10px] flex-shrink-0">
-            <p className="text-light-grey">Имя</p>
+            <p className="text-light-grey">E-mail</p>
             <p className="text-light-grey">Ваше ID</p>
             <p className="text-light-grey">Статус</p>
           </div>
           <div className="flex flex-col items-start gap-[10px] w-full">
-            <p>{userInfo?.data.username}</p>
+            <p>{userInfo?.data.email}</p>
             <p>{userInfo?.data.user_id}</p>
             <p>
               {userInfo?.data.role === "admin" ? "Модератор" : "Пользователь"}

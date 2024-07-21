@@ -34,9 +34,7 @@ const Header = () => {
             }
           >
             <ProfileIcon />
-            <div className="hidden sm:block">
-              {isLoading ? "Загрузка" : userInfo?.data?.username || "Войти"}
-            </div>
+            {isLoading ? "Загрузка" : userInfo?.data?.email || "Войти"}
           </Button>
         </div>
       </div>

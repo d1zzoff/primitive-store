@@ -70,16 +70,30 @@ const LoginModal = () => {
       </div>
       <form className="flex flex-col items-start gap-5 w-full">
         <Input
-          label="Имя пользователя"
-          error={errors.username?.message}
-          {...register("username")}
+          label="Введите E-mail"
+          error={errors.email?.message}
+          {...register("email", {
+            required: "Введите e-mail.",
+          })}
         />
         <Input
           label="Введите пароль"
+          type="password"
           error={errors.password?.message}
-          {...register("password")}
+          {...register("password", {
+            required: "Введите пароль.",
+          })}
         />
       </form>
+      <div className="flex justify-between w-full mb-[-20px] items-center">
+        <div className="flex items-center gap-[5px]">
+          <input type="checkbox" {...register("remember_me")} />
+          <p>Запомнить меня</p>
+        </div>
+        <h5 className="text-accent hover:underline cursor-pointer">
+          Забыли пароль?
+        </h5>
+      </div>
     </ModalLayout>
   );
 };

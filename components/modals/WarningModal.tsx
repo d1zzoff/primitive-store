@@ -3,18 +3,9 @@
 import ModalLayout from "@/components/modals/ModalLayout";
 import useWarningModal from "@/lib/hooks/useWarningModal";
 import WarningIcon from "@/public/icons/error.svg";
-import { getActionHandler } from "@/utils/actionHandlers";
 
 const WarningModal = () => {
-  const { isOpen, closeWarningModal, content, actionId } = useWarningModal();
-
-  const handleSubmit = () => {
-    const func = getActionHandler(actionId || "");
-
-    if (func) {
-      func();
-    }
-  };
+  const { isOpen, closeWarningModal, content, func } = useWarningModal();
 
   return (
     <ModalLayout
@@ -22,7 +13,7 @@ const WarningModal = () => {
       onClose={closeWarningModal}
       buttons={[
         { text: "Закрыть", click: closeWarningModal },
-        { text: "Подтвердить", click: handleSubmit },
+        { text: "Подтвердить", click: func },
       ]}
     >
       <div className="flex flex-col items-center w-full gap-[20px] text-center">

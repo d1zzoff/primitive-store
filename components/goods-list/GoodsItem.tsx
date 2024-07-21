@@ -16,9 +16,9 @@ const GoodsItem = ({ product }: { product: IProduct }) => {
   const handleDeleteProduct = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    const actionId = "delete-product";
-    registerActionHandler(actionId, () => mutate(product.good_id));
-    openWarningModal(actionId, "Вы уверены, что хотите удалить товар?");
+    openWarningModal("Вы уверены, что хотите удалить товар?", () =>
+      mutate(product.good_id)
+    );
   };
 
   const { mutate } = useMutation({

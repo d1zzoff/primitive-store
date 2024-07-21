@@ -18,7 +18,7 @@ const buttonVariants = cva(
           "bg-transparent border border-red text-red fill-red hover:bg-red hover:text-light hover:fill-light",
         borderGreen:
           "bg-transparent border border-green text-green fill-green hover:bg-green hover:text-light hover:fill-light",
-        inactive: "bg-gray-300 text-gray-500 cursor-not-allowed",
+        inactive: "bg-black text-light cursor-not-allowed",
       },
       size: {
         default: "h-[35px] px-5",

@@ -44,7 +44,7 @@ export async function getUserOrders(
 
   await new Promise((resolve) => setTimeout(resolve, 2000)); // Добавляем 2 секунды задержки для наглядности
 
-  return fetch(`http://localhost:8080/order/userall?${params}`, {
+  return fetch(`${process.env.API_URL}/order/userall?${params}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ export async function getOrders(
 
   if (filters.limit) params.append("limit", filters.limit.toString());
 
-  return fetch(`http://localhost:8080/order/all?${params}`, {
+  return fetch(`${process.env.API_URL}/order/all?${params}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -75,7 +75,7 @@ export async function getOrders(
 export async function newOrder(data: INewOrder) {
   const token = cookies().get("_token")?.value;
 
-  const response = await fetch("http://localhost:8080/order/new", {
+  const response = await fetch(`${process.env.API_URL}/order/new`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -95,7 +95,7 @@ export async function newOrder(data: INewOrder) {
 export async function acceptOrder(id: number) {
   const token = cookies().get("_token")?.value;
 
-  const response = await fetch(`http://localhost:8080/order/accept/${id}`, {
+  const response = await fetch(`${process.env.API_URL}/order/accept/${id}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
